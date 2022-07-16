@@ -2,33 +2,139 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
+
+public class Scene
+{
+    public string dialogue;
+    public string button1;
+    public string button2;
+    public string button3;
+    public string button4;
+    public Scene scene1;
+    public Scene scene2;
+    public Scene scene3;
+    public Scene scene4;
+
+    /**
+     * text : main dialogue on the screen
+     * b1 : button 1 text,
+     * b2 : button 2 text,
+     * b3 : button 3 text,
+     * b4 : button 4 text, 
+     * s1 : scene 1 
+     * s2 : scene 2 
+     * s3 : scene 3 
+     * s4 : scene 4
+     * 
+     * Each button number takes you to the corresponding scene number
+     * **/
+
+    //Should definitely use an array or linkedlist
+    public Scene(string text, string b1, string b2, string b3, string b4, Scene s1, Scene s2, Scene s3, Scene s4)
+    {
+
+        dialogue = text;
+        button1 = b1;
+        button2 = b2;
+        button3 = b3;
+        button4 = b4;
+        scene1 = s1;
+        scene2 = s2;
+        scene3 = s3;
+        scene4 = s4;
+    }
+
+}
 
 public class GameController : MonoBehaviour
 {
-    public Text diaglogue;
+    Scene currScene;
+    public TMP_Text dialogue;
     public Button button1;
     public Button button2;
-    public Image character;
-    // Start is called before the first frame update
-    void Start()
+    public Button button3;
+    public Button button4;
+
+    static int a = 0;
+    static int b = 10;
+
+    
+
+
+    static Scene scene5 = new Scene("I will take a potato chip ... and EAT IT!!!!!",
+                         null, null, null, null,
+                         null, null, null, null);
+
+    static Scene scene4 = new Scene("There are three things all wise men fear. A storm in the sea, a night with no moon, and the anger of a gentle man",
+                         "Lord of the Rings", "The Hobbit", "Harry Potter", "Death Note",
+                         scene2, scene3, scene1, scene5);
+
+    static Scene scene3 = new Scene("I have found that it is the small everyday deed of ordinary folks that keep the darkness at bay. Small acts of kindness and love",
+                         "Lord of the Rings", "KingKiller Chronicles", "Harry Potter", null,
+                         null, scene4, scene5, null);
+
+    static Scene scene2 = new Scene("One Ring to rule them all, one ring to find them. One ring to bring them all and in the darkness bind them",
+                         "Harry Potter", "The Hobbit", "Kingkiller Chronicles", null,
+                         scene5, scene3, scene4, null);
+
+    static Scene scene1 = new Scene("Mr and Mrs Dursley of number four, privet drive were proud to say, they were completey normal. Thank you very much",
+                         "Lord of the Rings", "The Hobbit", null, null,
+                         scene2, scene3, null, null);
+
+
+     void Start()
     {
-        
+        //sets the first scene
+        a = b;
+        Debug.Log(a);
+        switchScene(scene1);
     }
 
-    // Update is called once per frame
-    void Update()
+
+     void switchScene(Scene newScene)
     {
-        
+        Debug.Log("dialogue Text:" + dialogue.text + "newScene dialoge: " + newScene.dialogue);
+        dialogue.text = newScene.dialogue;
+
+        //again an array would be a MUCH better option
+
+        //checks if the button has been assigned a value
+        button1.gameObject.SetActive(newScene.button1 != null);
+        button2.gameObject.SetActive(newScene.button2 != null);
+        button3.gameObject.SetActive(newScene.button3 != null);
+        button4.gameObject.SetActive(newScene.button4 != null);
+
+        //adds the text to the scene
+        button1.GetComponentInChildren<TMP_Text>().text = newScene.button1;
+        button2.GetComponentInChildren<TMP_Text>().text = newScene.button2;
+        button3.GetComponentInChildren<TMP_Text>().text = newScene.button3;
+        button4.GetComponentInChildren<TMP_Text>().text = newScene.button4;
+
+        //sets the current scene to the new scene
+        currScene = newScene;
+
     }
 
     public void onButtonClick1()
     {
-        diaglogue.text = "THE LAND OF MORDOR, WHERE SHADOWS DIE";
-        character.color = Color.blue;
+        Debug.Log("Button1 Clicked");
+        switchScene(currScene.scene1);
     }
     public void onButtonClick2()
     {
-        diaglogue.text = "Mr and Mrs Dursley of number four, privet drive were proud to say, they were completey mad. Thank you very much.";
-        character.color = Color.green;
+        Debug.Log("Button2 Clicked");
+        switchScene(currScene.scene2);
+    }
+    public void onButtonClick3()
+    {
+        Debug.Log("Button3 Clicked");
+        switchScene(currScene.scene3);
+    }
+    public void onButtonClick4()
+    {
+        Debug.Log("Button3 Clicked");
+        switchScene(currScene.scene4);
     }
 }

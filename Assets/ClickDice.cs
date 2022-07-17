@@ -16,6 +16,7 @@ public class ClickDice : MonoBehaviour
      * Also we can put a meter
      */
     HashSet<string> sinChecker;
+
     private string diceText;
     float deltaTime;
     float countTimer;
@@ -23,6 +24,8 @@ public class ClickDice : MonoBehaviour
     bool startCount;
     bool canRoll;
     bool reRoll;
+
+
     private void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -36,6 +39,7 @@ public class ClickDice : MonoBehaviour
         startCount = false;
         canRoll = false;
         reRoll = false;
+
         //USED FOR TESTING
         //--------------------
         //red = 1f;
@@ -49,6 +53,7 @@ public class ClickDice : MonoBehaviour
     {
         deltaTime = Time.deltaTime;
         countTimer += deltaTime * 0.1f;
+
         //USED FOR TESTING
         //---------------------------
         //Color c = new Color(red, green, blue, alpha);
@@ -60,6 +65,7 @@ public class ClickDice : MonoBehaviour
          */
         if (Input.GetMouseButtonUp(0))
         {
+
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {
@@ -68,6 +74,8 @@ public class ClickDice : MonoBehaviour
                 startCount = true;
                 countTimer = 0;
                 canRoll = true;
+                FindObjectOfType<AudioManager>().Play("DiceShuffle");
+
 
 
 
@@ -85,7 +93,8 @@ public class ClickDice : MonoBehaviour
         //start a count and see how long it takes to reach 5 seconds
         if (startCount && countTimer < 5)
         {
-            countTimer += deltaTime * 5; // i multiplied delta time here with 5 to speed things up
+
+            countTimer += deltaTime * 2; // i multiplied delta time here with 5 to speed things up
             randomNumberCount = Random.Range(1, 7);
             text.text = "\n" + randomNumberCount + "\n\n\n" + sins[randomNumberCount]; // just some random numbers for that subtle random number shuffle effect
 
@@ -93,6 +102,7 @@ public class ClickDice : MonoBehaviour
         else
 
         {
+
             startCount = false;
         }
 
@@ -101,6 +111,7 @@ public class ClickDice : MonoBehaviour
         {
             rollDice(); // look into setDice Text afterwards
             canRoll = false;
+
         }
 
     }

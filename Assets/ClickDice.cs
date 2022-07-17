@@ -21,18 +21,21 @@ public class ClickDice : MonoBehaviour
     float countTimer;
     int randomNumberCount;
     bool startCount;
+    bool canRoll;
+    bool reRoll;
     private void Start()
     {
         text = GetComponentInChildren<Text>();
         sprite = GetComponent<SpriteRenderer>();
         randomNumber = 0;
-        sins = new string[7] { "Pride", "Greed", "Wrath", "Envy", "Lust", "Gluttony", "Sloth" };
+        sins = new string[8] { "", "Pride", "Greed", "Wrath", "Envy", "Lust", "Gluttony", "Sloth" };
         sinChecker = new HashSet<string>();
         diceText = null;
         image = GetComponentInChildren<Image>();
         countTimer = 0;
-        randomNumberCount = 1;
         startCount = false;
+        canRoll = false;
+        reRoll = false;
         //USED FOR TESTING
         //--------------------
         //red = 1f;
@@ -64,25 +67,8 @@ public class ClickDice : MonoBehaviour
                 image.gameObject.SetActive(false);
                 startCount = true;
                 countTimer = 0;
-                //rollDice();
-                rollDice();
-                if (sinChecker.Add(getDiceText()))
-                {
+                canRoll = true;
 
-                    //FADE OUT THE DICE BUTTON AND FADE IN THE TEXT ADVENTURE
-
-
-                    //this.gameObject.SetActive(false);
-                }
-                else
-                {
-
-                    //keep rolling because of sins already being finished
-
-
-
-                    rollDice();
-                }
 
 
                 //USED FOR TESTING
@@ -95,7 +81,27 @@ public class ClickDice : MonoBehaviour
 
             }
         }
+        //this for the shuffle effect
+        //start a count and see how long it takes to reach 5 seconds
+        if (startCount && countTimer < 5)
+        {
+            countTimer += deltaTime * 5; // i multiplied delta time here with 5 to speed things up
+            randomNumberCount = Random.Range(1, 7);
+            text.text = "\n" + randomNumberCount + "\n\n\n" + sins[randomNumberCount]; // just some random numbers for that subtle random number shuffle effect
 
+        }
+        else
+
+        {
+            startCount = false;
+        }
+
+        //stop the counting and can roll
+        if (startCount == false && canRoll)
+        {
+            rollDice(); // look into setDice Text afterwards
+            canRoll = false;
+        }
 
     }
     /*
@@ -107,30 +113,30 @@ public class ClickDice : MonoBehaviour
     {
 
 
-        //this returns integers 0 to 7
 
-        randomNumber = Random.Range(0, 7);
+        //numbers 1 - > 7 for each sin
+        randomNumber = Random.Range(1, 8);
         switch (randomNumber)
         {
-            case 0:
+            case 1:
                 sprite.color = new Color(1f, 0.3f, 0.49f, 1f);
                 break;
-            case 1:
+            case 2:
                 sprite.color = new Color(1f, 1f, 0f, 1f);
                 break;
-            case 2:
+            case 3:
                 sprite.color = new Color(1f, 0f, 0.2f, 1f);
                 break;
-            case 3:
+            case 4:
                 sprite.color = new Color(0f, 0.5f, 0f, 1f);
                 break;
-            case 4:
+            case 5:
                 sprite.color = new Color(0f, 0.2f, 1f, 1f);
                 break;
-            case 5:
+            case 6:
                 sprite.color = new Color(0.9622642f, 0.5745565f, 0f, 1f);
                 break;
-            case 6:
+            case 7:
                 sprite.color = new Color(0.5510858f, 0.9056604f, 0.8913373f, 1f);
                 break;
         }
@@ -157,22 +163,25 @@ public class ClickDice : MonoBehaviour
             //fade out already stored sins
             text.color = new Color(0.1960f, 0.1960f, 0.1960f, 0.25f);
             text.text = t;
+
+
         }
         else
         {
             //maintain regular alpha channel and color of dice information
             text.color = new Color(0.1960f, 0.1960f, 0.1960f, 1f);
             text.text = t;
+
+            //fade out the dice button here so you can provide the next adventure. 
+
+            //there might be some logic issue but im too tired to think
+
+
         }
 
     }
 
 
-    /*
-     
-     Number Generation Animation
-     
-     */
 
 
 }

@@ -22,16 +22,12 @@ public class Timer : MonoBehaviour
         deltaTime = Time.deltaTime;
         if (count == 0)
         {
-            //do something
+            // WHEN COUNT == 0, END THE GAME. GAME OVER
         }
         else
         {
             count -= deltaTime;
         }
-        //{
-        //    count -= deltaTime;
-
-        //}
 
         text.text = count.ToString("N0");
     }

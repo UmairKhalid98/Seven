@@ -11,7 +11,7 @@ public class ClickDice : MonoBehaviour
     int randomNumber;
     SpriteRenderer sprite;
     string[] sins;
-    //we will need to check the size of this data structure later with another script to see if the game ends or not
+    //MAKE SURE TO CHECK THE SIZE OF THE HASH SET AND COMPARE IT WITH THE ARRAY SIZE TO SEE IF YOU HAVE WON
     /*
      * Also we can put a meter
      */
@@ -56,7 +56,6 @@ public class ClickDice : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {
-                this.gameObject.SetActive(false);
                 //make active once scene arrives again
                 image.gameObject.SetActive(false);
                 startCount = true;
@@ -66,22 +65,29 @@ public class ClickDice : MonoBehaviour
                 if (sinChecker.Add(getDiceText()))
                 {
 
-                    //we will fade out the dice scene and fade in the text adventure
+                    //FADE OUT THE DICE BUTTON AND FADE IN THE TEXT ADVENTURE
+
+
                     //this.gameObject.SetActive(false);
                 }
                 else
                 {
 
-                    //keep rolling
-                    //Debug.Log("CONTAINS:" + getDiceText());
+                    //keep rolling because of sins already being finished
+
+
 
                     rollDice();
                 }
-                //just to check the hashset
+
+
+                //USED FOR TESTING
+                //--------------------------
                 //foreach (string s in sinChecker)
                 //{
                 //    Debug.Log("SIN:" + s);
                 //}
+                //-----------------------------
 
             }
         }
@@ -90,7 +96,7 @@ public class ClickDice : MonoBehaviour
     }
     /*
      
-    Will program in a number randomizing animation later
+    Will program in a number randomizing animation later or never. idk. its backlog. 
      
      */
     private void rollDice()
@@ -126,53 +132,12 @@ public class ClickDice : MonoBehaviour
         }
 
 
-        //if (startCount)
-        //{
-        //    countTimer += deltaTime * 10;
-        //    randomNumber += 1;
-        //    setDiceText("\n" + randomNumber.ToString() + "\n\n\n");
-        //}
-        //if (countTimer < 60f && startCount == true)
-        //{
-        //    countTimer += deltaTime * 10;
-        //    randomNumberCount += Random.Range(0, 7);
-        //    if (randomNumberCount > 7)
-        //    {
-        //        randomNumberCount = 0;
-        //    }
-        //    Debug.Log("RANDOM:" + countTimer);
-        //    //for (int i = 0; i < 7; i++)
-        //    //{
-        //    //    randomNumberCount = Random.Range(i, 7);
-        //    //    setDiceText("\n" + randomNumberCount + "\n\n\n" + sins[randomNumberCount]);
-        //    //    Debug.Log("RANDOM:" + randomNumberCount);
-        //    //}
-        //}
-        //else
-        //{
-        //startCount = false;
 
-
-        //diceText = sins[randomNumber];
-        //setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+        diceText = sins[randomNumber];
+        setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
 
 
 
-
-        //}
-        //if (countTimer >= 30f)
-        //{
-        //    startCount = false;
-        //    diceText = sins[randomNumber];
-        //    setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
-        //}
-        //else
-        //{
-
-        //    countTimer += deltaTime * 10;
-        //    randomNumberCount = Random.Range(0, 7);
-        //    setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
-        //}
 
 
 
@@ -185,16 +150,17 @@ public class ClickDice : MonoBehaviour
     {
         if (!sinChecker.Add(t))
         {
+            //fade out already stored sins
             text.color = new Color(0.1960f, 0.1960f, 0.1960f, 0.25f);
             text.text = t;
         }
         else
         {
+            //maintain regular alpha channel and color of dice information
             text.color = new Color(0.1960f, 0.1960f, 0.1960f, 1f);
             text.text = t;
         }
 
-        //text.text = t;
     }
 
 

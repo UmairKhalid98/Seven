@@ -56,6 +56,7 @@ public class ClickDice : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {
+                this.gameObject.SetActive(false);
                 //make active once scene arrives again
                 image.gameObject.SetActive(false);
                 startCount = true;
@@ -152,8 +153,8 @@ public class ClickDice : MonoBehaviour
         //startCount = false;
 
 
-        diceText = sins[randomNumber];
-        setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+        //diceText = sins[randomNumber];
+        //setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
 
 
 

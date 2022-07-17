@@ -17,11 +17,10 @@ public class ClickDice : MonoBehaviour
      */
     HashSet<string> sinChecker;
     private string diceText;
-    private int CountFPS = 30;
-    public float Duration = 1f;
     float deltaTime;
-    float count;
-
+    float countTimer;
+    int randomNumberCount;
+    bool startCount;
     private void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -31,7 +30,9 @@ public class ClickDice : MonoBehaviour
         sinChecker = new HashSet<string>();
         diceText = null;
         image = GetComponentInChildren<Image>();
-        count = 0;
+        countTimer = 0;
+        randomNumberCount = 1;
+        startCount = false;
         //USED FOR TESTING
         //--------------------
         //red = 1f;
@@ -44,6 +45,7 @@ public class ClickDice : MonoBehaviour
     private void Update()
     {
         deltaTime = Time.deltaTime;
+        countTimer += deltaTime * 0.1f;
         //USED FOR TESTING
         //---------------------------
         //Color c = new Color(red, green, blue, alpha);
@@ -56,6 +58,8 @@ public class ClickDice : MonoBehaviour
             {
                 //make active once scene arrives again
                 image.gameObject.SetActive(false);
+                startCount = true;
+                countTimer = 0;
                 //rollDice();
                 rollDice();
                 if (sinChecker.Add(getDiceText()))
@@ -73,10 +77,10 @@ public class ClickDice : MonoBehaviour
                     rollDice();
                 }
                 //just to check the hashset
-                foreach (string s in sinChecker)
-                {
-                    Debug.Log("SIN:" + s);
-                }
+                //foreach (string s in sinChecker)
+                //{
+                //    Debug.Log("SIN:" + s);
+                //}
 
             }
         }
@@ -119,8 +123,57 @@ public class ClickDice : MonoBehaviour
                 sprite.color = new Color(0.5510858f, 0.9056604f, 0.8913373f, 1f);
                 break;
         }
+
+
+        //if (startCount)
+        //{
+        //    countTimer += deltaTime * 10;
+        //    randomNumber += 1;
+        //    setDiceText("\n" + randomNumber.ToString() + "\n\n\n");
+        //}
+        //if (countTimer < 60f && startCount == true)
+        //{
+        //    countTimer += deltaTime * 10;
+        //    randomNumberCount += Random.Range(0, 7);
+        //    if (randomNumberCount > 7)
+        //    {
+        //        randomNumberCount = 0;
+        //    }
+        //    Debug.Log("RANDOM:" + countTimer);
+        //    //for (int i = 0; i < 7; i++)
+        //    //{
+        //    //    randomNumberCount = Random.Range(i, 7);
+        //    //    setDiceText("\n" + randomNumberCount + "\n\n\n" + sins[randomNumberCount]);
+        //    //    Debug.Log("RANDOM:" + randomNumberCount);
+        //    //}
+        //}
+        //else
+        //{
+        //startCount = false;
+
+
         diceText = sins[randomNumber];
         setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+
+
+
+
+        //}
+        //if (countTimer >= 30f)
+        //{
+        //    startCount = false;
+        //    diceText = sins[randomNumber];
+        //    setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+        //}
+        //else
+        //{
+
+        //    countTimer += deltaTime * 10;
+        //    randomNumberCount = Random.Range(0, 7);
+        //    setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+        //}
+
+
 
     }
     private string getDiceText()

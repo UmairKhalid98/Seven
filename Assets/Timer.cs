@@ -8,10 +8,11 @@ public class Timer : MonoBehaviour
     Text text;
     float deltaTime;
     float count;
+    float count2;
     void Start()
     {
         text = GetComponentInChildren<Text>();
-        count = 0;
+        count = 60;
 
     }
 
@@ -19,7 +20,19 @@ public class Timer : MonoBehaviour
     void Update()
     {
         deltaTime = Time.deltaTime;
-        count += deltaTime;
+        if (count == 0)
+        {
+            //do something
+        }
+        else
+        {
+            count -= deltaTime;
+        }
+        //{
+        //    count -= deltaTime;
+
+        //}
+
         text.text = count.ToString("N0");
     }
 }

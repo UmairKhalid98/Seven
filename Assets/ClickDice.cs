@@ -51,6 +51,10 @@ public class ClickDice : MonoBehaviour
         //Color c = new Color(red, green, blue, alpha);
         //sprite.color = c;
         //----------------------------
+
+        /*
+         * Mouse click down on the dice's box collider to detect a mouse point. if hits the collider, so something! 
+         */
         if (Input.GetMouseButtonUp(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);

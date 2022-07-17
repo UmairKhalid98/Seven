@@ -8,8 +8,8 @@ public class ClickDice : MonoBehaviour
 
     private Text text;
     private Image image;
-    int randomNumber;
-    SpriteRenderer sprite;
+    public int randomNumber;
+    Image sprite;
     string[] sins;
     //MAKE SURE TO CHECK THE SIZE OF THE HASH SET AND COMPARE IT WITH THE ARRAY SIZE TO SEE IF YOU HAVE WON
     /*
@@ -20,7 +20,7 @@ public class ClickDice : MonoBehaviour
     private string diceText;
     float deltaTime;
     float countTimer;
-    int randomNumberCount;
+    public int randomNumberCount;
     bool startCount;
     bool canRoll;
     bool reRoll;
@@ -29,7 +29,7 @@ public class ClickDice : MonoBehaviour
     private void Start()
     {
         text = GetComponentInChildren<Text>();
-        sprite = GetComponent<SpriteRenderer>();
+        sprite = GetComponent<Image>();
         randomNumber = 0;
         sins = new string[8] { "", "Pride", "Greed", "Wrath", "Envy", "Lust", "Gluttony", "Sloth" };
         sinChecker = new HashSet<string>();
@@ -49,7 +49,7 @@ public class ClickDice : MonoBehaviour
         // --------------------
 
     }
-    private void Update()
+    public void mouseNotClicked()
     {
         deltaTime = Time.deltaTime;
         countTimer += deltaTime * 0.1f;
@@ -74,7 +74,7 @@ public class ClickDice : MonoBehaviour
                 startCount = true;
                 countTimer = 0;
                 canRoll = true;
-                FindObjectOfType<AudioManager>().Play("DiceShuffle");
+                //FindObjectOfType<AudioManager>().Play("DiceShuffle");
 
 
 
@@ -96,7 +96,7 @@ public class ClickDice : MonoBehaviour
 
             countTimer += deltaTime * 2; // i multiplied delta time here with 5 to speed things up
             randomNumberCount = Random.Range(1, 7);
-            text.text = "\n" + randomNumberCount + "\n\n\n" + sins[randomNumberCount]; // just some random numbers for that subtle random number shuffle effect
+            text.text = "\n" + randomNumberCount + "\n\n" + sins[randomNumberCount]; // just some random numbers for that subtle random number shuffle effect
 
         }
         else
@@ -120,10 +120,8 @@ public class ClickDice : MonoBehaviour
     Will program in a number randomizing animation later or never. idk. its backlog. 
      
      */
-    private void rollDice()
+    public void rollDice()
     {
-
-
 
         //numbers 1 - > 7 for each sin
         randomNumber = Random.Range(1, 8);
@@ -150,13 +148,16 @@ public class ClickDice : MonoBehaviour
             case 7:
                 sprite.color = new Color(0.5510858f, 0.9056604f, 0.8913373f, 1f);
                 break;
+
+
         }
+       
 
 
 
         diceText = sins[randomNumber];
         setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
-
+        //return randomNumber;
 
 
 
@@ -169,6 +170,7 @@ public class ClickDice : MonoBehaviour
     }
     private void setDiceText(string t)
     {
+
         if (!sinChecker.Add(t))
         {
             //fade out already stored sins

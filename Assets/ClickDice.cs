@@ -5,20 +5,23 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 public class ClickDice : MonoBehaviour
 {
+
     private Text text;
+    private Image image;
     int randomNumber;
     SpriteRenderer sprite;
     string[] sins;
-    public float red;
-    public float green;
-    public float blue;
-    public float alpha;
     //we will need to check the size of this data structure later with another script to see if the game ends or not
     /*
      * Also we can put a meter
      */
     HashSet<string> sinChecker;
     private string diceText;
+    private int CountFPS = 30;
+    public float Duration = 1f;
+    float deltaTime;
+    float count;
+
     private void Start()
     {
         text = GetComponentInChildren<Text>();
@@ -27,6 +30,8 @@ public class ClickDice : MonoBehaviour
         sins = new string[7] { "Pride", "Greed", "Wrath", "Envy", "Lust", "Gluttony", "Sloth" };
         sinChecker = new HashSet<string>();
         diceText = null;
+        image = GetComponentInChildren<Image>();
+        count = 0;
         //USED FOR TESTING
         //--------------------
         //red = 1f;
@@ -38,6 +43,7 @@ public class ClickDice : MonoBehaviour
     }
     private void Update()
     {
+        deltaTime = Time.deltaTime;
         //USED FOR TESTING
         //---------------------------
         //Color c = new Color(red, green, blue, alpha);
@@ -48,19 +54,22 @@ public class ClickDice : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit.collider != null)
             {
+                //make active once scene arrives again
+                image.gameObject.SetActive(false);
                 //rollDice();
                 rollDice();
                 if (sinChecker.Add(getDiceText()))
                 {
-                    //transition to another screen;
-                    //
-                    Debug.Log("DOES NOT CONTAIN:" + getDiceText());
 
+                    //we will fade out the dice scene and fade in the text adventure
+                    //this.gameObject.SetActive(false);
                 }
                 else
                 {
+
                     //keep rolling
-                    Debug.Log("CONTAINS:" + getDiceText());
+                    //Debug.Log("CONTAINS:" + getDiceText());
+
                     rollDice();
                 }
                 //just to check the hashset
@@ -110,14 +119,8 @@ public class ClickDice : MonoBehaviour
                 sprite.color = new Color(0.5510858f, 0.9056604f, 0.8913373f, 1f);
                 break;
         }
-        //Debug.Log("STRING: \n\n\n" + sins[randomNumber]);
         diceText = sins[randomNumber];
-        //Debug.Log("SIN:" + getDiceText());
-        //Debug.Log("\n\n\n" + sins[randomNumber]);
-        //diceText = "\n\n\n" + sins[randomNumber];
-        //Debug.Log("SIN:" + diceText);
-        //text.text = diceText;
-        setDiceText("\n\n\n" + diceText);
+        setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
 
     }
     private string getDiceText()
@@ -126,9 +129,26 @@ public class ClickDice : MonoBehaviour
     }
     private void setDiceText(string t)
     {
-        text.text = t;
+        if (!sinChecker.Add(t))
+        {
+            text.color = new Color(0.1960f, 0.1960f, 0.1960f, 0.25f);
+            text.text = t;
+        }
+        else
+        {
+            text.color = new Color(0.1960f, 0.1960f, 0.1960f, 1f);
+            text.text = t;
+        }
+
+        //text.text = t;
     }
 
+
+    /*
+     
+     Number Generation Animation
+     
+     */
 
 
 }

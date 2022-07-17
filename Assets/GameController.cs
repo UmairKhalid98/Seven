@@ -17,33 +17,33 @@ public class Scene
     public Scene scene3;
     public Scene scene4;
 
+    public int img;
+
     /**
      * text : main dialogue on the screen
      * b1 : button 1 text,
      * b2 : button 2 text,
      * b3 : button 3 text,
-     * b4 : button 4 text, 
      * s1 : scene 1 
      * s2 : scene 2 
      * s3 : scene 3 
-     * s4 : scene 4
      * 
      * Each button number takes you to the corresponding scene number
      * **/
 
-    //Should definitely use an array or linkedlist
-    public Scene(string text, string b1, string b2, string b3, string b4, Scene s1, Scene s2, Scene s3, Scene s4)
+    //Should definitely use an array or linkedlist of scenes with an id, will make it very clean. If time permits, I will do that
+    public Scene(string text, string b1, string b2, string b3, Scene s1, Scene s2, Scene s3, int bg)
     {
 
         dialogue = text;
         button1 = b1;
         button2 = b2;
         button3 = b3;
-        button4 = b4;
         scene1 = s1;
         scene2 = s2;
         scene3 = s3;
-        scene4 = s4;
+        img = bg;
+
     }
 
 }
@@ -56,44 +56,45 @@ public class GameController : MonoBehaviour
     public Button button2;
     public Button button3;
     public Button button4;
+    public GameObject bgImage;
+    public Sprite[] images;
 
-    static int a = 0;
-    static int b = 10;
-
-    
-
+    //Static objects can only be called after they have been created 
 
     static Scene scene5 = new Scene("I will take a potato chip ... and EAT IT!!!!!",
-                         null, null, null, null,
-                         null, null, null, null);
+                         null, null, null,
+                         null, null, null,
+                         4);
 
     static Scene scene4 = new Scene("There are three things all wise men fear. A storm in the sea, a night with no moon, and the anger of a gentle man",
-                         "Lord of the Rings", "The Hobbit", "Harry Potter", "Death Note",
-                         scene2, scene3, scene1, scene5);
+                         null, "DeathNote", null,
+                         null, scene5, null,
+                         3);
 
     static Scene scene3 = new Scene("I have found that it is the small everyday deed of ordinary folks that keep the darkness at bay. Small acts of kindness and love",
-                         "Lord of the Rings", "KingKiller Chronicles", "Harry Potter", null,
-                         null, scene4, scene5, null);
+                         "Lord of the Rings", "KingKiller Chronicles", "Harry Potter",
+                         null, scene4, scene5,
+                         2);
 
     static Scene scene2 = new Scene("One Ring to rule them all, one ring to find them. One ring to bring them all and in the darkness bind them",
-                         "Harry Potter", "The Hobbit", "Kingkiller Chronicles", null,
-                         scene5, scene3, scene4, null);
+                         "Death Note", "The Hobbit", "Kingkiller Chronicles",
+                         scene5, scene3, scene4,
+                         1);
 
     static Scene scene1 = new Scene("Mr and Mrs Dursley of number four, privet drive were proud to say, they were completey normal. Thank you very much",
-                         "Lord of the Rings", "The Hobbit", null, null,
-                         scene2, scene3, null, null);
+                         "Lord of the Rings", "The Hobbit", null,
+                         scene2, scene3, null,
+                         0);
 
 
-     void Start()
+    void Start()
     {
         //sets the first scene
-        a = b;
-        Debug.Log(a);
         switchScene(scene1);
     }
 
 
-     void switchScene(Scene newScene)
+    void switchScene(Scene newScene)
     {
         Debug.Log("dialogue Text:" + dialogue.text + "newScene dialoge: " + newScene.dialogue);
         dialogue.text = newScene.dialogue;
@@ -104,13 +105,14 @@ public class GameController : MonoBehaviour
         button1.gameObject.SetActive(newScene.button1 != null);
         button2.gameObject.SetActive(newScene.button2 != null);
         button3.gameObject.SetActive(newScene.button3 != null);
-        button4.gameObject.SetActive(newScene.button4 != null);
 
         //adds the text to the scene
         button1.GetComponentInChildren<TMP_Text>().text = newScene.button1;
         button2.GetComponentInChildren<TMP_Text>().text = newScene.button2;
         button3.GetComponentInChildren<TMP_Text>().text = newScene.button3;
-        button4.GetComponentInChildren<TMP_Text>().text = newScene.button4;
+
+        bgImage.GetComponent<Image>().sprite = images[newScene.img];
+
 
         //sets the current scene to the new scene
         currScene = newScene;
@@ -132,9 +134,5 @@ public class GameController : MonoBehaviour
         Debug.Log("Button3 Clicked");
         switchScene(currScene.scene3);
     }
-    public void onButtonClick4()
-    {
-        Debug.Log("Button3 Clicked");
-        switchScene(currScene.scene4);
-    }
+
 }

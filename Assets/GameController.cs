@@ -267,7 +267,7 @@ public class GameController : MonoBehaviour
 
     static Scene pride15 = new Scene("Alright now time to get away! What do you do?",
          "Spill oil behind you and run into an alley", "Use the walkie talkie to try and listen in to police radio ", "Run like the wind",
-        pride14, pride13, pride12,
+        pride18, pride17, pride16,
          3);
 
     //--------------
@@ -604,7 +604,7 @@ public class GameController : MonoBehaviour
 
     static Scene scene6 = new Scene("YAAAAAAAAAAAAAAAAWWWWNNNNN, just uh...get in there or something. *you pass Sven and try to start the mission*",
                      null, "Next", null,
-                    null, scene7, null,
+                    null, sloth1, null,
                      3);
 
     //Wrath
@@ -743,32 +743,36 @@ public class GameController : MonoBehaviour
         }
     public void diceRoll()
     {
-       
+       //set a timer and change scene after a few seconds the dice has been rolled
         int number =  diceTester.GetComponent<ClickDice>().randomNumber;
-
+        Debug.Log(number + "NUMBER");
+        Scene newScene = scene14;
         switch (number) {
             case 1:
-                switchScene(scene12);
+                newScene = scene14;
                 break;
             case 2:
-                switchScene(scene16);
+                newScene = scene16;
                 break;
             case 3:
-                switchScene(scene14);
+                newScene = scene4;
                 break;
             case 4:
-                switchScene(scene10);
+                newScene = scene8;
                 break;
             case 5:
-                switchScene(scene8);
+                newScene = scene10;
                 break;
             case 6:
-                switchScene(scene6);
+                newScene = scene12;
                 break;
             case 7:
-                switchScene(scene4);
+                newScene = scene6;
                 break;
-        } 
+        }
+        switchScene(newScene);
+        //diceTester.GetComponent<ClickDice>().setRandomNumber(0);
+        
     }
 
     void Start()
@@ -782,7 +786,7 @@ public class GameController : MonoBehaviour
 
     void switchScene(Scene newScene)
     {
-        Debug.Log("curRoll: "+ roll + " newRoll: "+ newScene.roll );
+        //Debug.Log("curRoll: "+ roll + " newRoll: "+ newScene.roll );
         if (roll)
         {
             diceTester.gameObject.SetActive(true);

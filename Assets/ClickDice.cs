@@ -15,15 +15,14 @@ public class ClickDice : MonoBehaviour
     /*
      * Also we can put a meter
      */
-    HashSet<string> sinChecker;
+    HashSet<int> sinChecker;
 
     private string diceText;
     float deltaTime;
-    float countTimer;
+    public float countTimer;
     public int randomNumberCount;
     bool startCount;
     bool canRoll;
-    bool reRoll;
 
 
     private void Start()
@@ -32,13 +31,13 @@ public class ClickDice : MonoBehaviour
         sprite = GetComponent<Image>();
         randomNumber = 0;
         sins = new string[8] { "", "Pride", "Greed", "Wrath", "Envy", "Lust", "Gluttony", "Sloth" };
-        sinChecker = new HashSet<string>();
+        sinChecker = new HashSet<int>();
         diceText = null;
         image = GetComponentInChildren<Image>();
-        countTimer = 0;
+        countTimer = 20;
         startCount = false;
         canRoll = false;
-        reRoll = false;
+        //setDiceText();
 
         //USED FOR TESTING
         //--------------------
@@ -49,7 +48,19 @@ public class ClickDice : MonoBehaviour
         // --------------------
 
     }
-    public void mouseNotClicked()
+    private void notCalled()
+    {
+        Debug.Log("updating..."+ countTimer);
+        countTimer += Time.deltaTime;
+        if (!canRoll && countTimer > 3)
+        {
+            Debug.Log("Can roll now, random number back to zero");
+            //setRandomNumber(0);
+            canRoll = true;
+        }
+    }
+    //not used atm
+    public void mouseClicked()
     {
         deltaTime = Time.deltaTime;
         countTimer += deltaTime * 0.1f;
@@ -109,7 +120,7 @@ public class ClickDice : MonoBehaviour
         //stop the counting and can roll
         if (startCount == false && canRoll)
         {
-            rollDice(); // look into setDice Text afterwards
+            //rollDice(); // look into setDice Text afterwards
             canRoll = false;
 
         }
@@ -120,11 +131,13 @@ public class ClickDice : MonoBehaviour
     Will program in a number randomizing animation later or never. idk. its backlog. 
      
      */
-    public void rollDice()
+    public void setDiceText()
     {
 
         //numbers 1 - > 7 for each sin
-        randomNumber = Random.Range(1, 8);
+        //if (canRoll)
+        //{
+            randomNumber = Random.Range(1, 8);
         switch (randomNumber)
         {
             case 1:
@@ -151,45 +164,42 @@ public class ClickDice : MonoBehaviour
 
 
         }
-       
 
 
+        canRoll = false;
+        countTimer = 0;
 
-        diceText = sins[randomNumber];
-        setDiceText("\n" + randomNumber + "\n\n\n" + diceText);
+            text.text = "\n" + randomNumber + "\n\n" + sins[randomNumber];
+            checkDice(randomNumber);
+        //}
+
         //return randomNumber;
 
 
 
-
-
     }
+    //called from gamecontroller
+    //public void setRandomNumber(int t)
+    //{
+    //    randomNumber = t;
+    //    text.text = "\n" + randomNumber + "\n\n" + sins[randomNumber];
+    //}
+
     private string getDiceText()
     {
         return diceText;
     }
-    private void setDiceText(string t)
+    private void checkDice(int t)
     {
 
-        if (!sinChecker.Add(t))
+        if (sinChecker.Contains(t))
         {
-            //fade out already stored sins
-            text.color = new Color(0.1960f, 0.1960f, 0.1960f, 0.25f);
-            text.text = t;
-
-
+            Debug.Log("Dice Added");
+            setDiceText(); //roll again
         }
         else
         {
-            //maintain regular alpha channel and color of dice information
-            text.color = new Color(0.1960f, 0.1960f, 0.1960f, 1f);
-            text.text = t;
-
-            //fade out the dice button here so you can provide the next adventure. 
-
-            //there might be some logic issue but im too tired to think
-
-
+            sinChecker.Add(t);
         }
 
     }
